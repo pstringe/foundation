@@ -101,6 +101,18 @@ int f_putendl(char *s) {
     return (bytes_written + 1);
 }
 
+int f_iswhitespace(char c){
+    char*   whitespace_chars;
+    int     i;
+
+    whitespace_chars = " \t, \r, \n, \f";
+    i = 0;
+    while (whitespace_chars[i]){
+        if (c != whitespace_chars[i])
+            return (0);
+    }
+    return (1);
+}
 /*
 ** test suites
 */
@@ -149,6 +161,19 @@ int test_isascii(void) {
     return (0);
 }
 
+int test_is_whitespace(void) {
+    assert(f_isascii('a') == 0);
+    assert(f_isascii('1') == 0);
+    assert(f_isascii(' ') == 1);
+    assert(f_isascii('\n') == 1);
+    assert(f_isascii('\t') == 1);
+    assert(f_isascii('\r') == 1);
+    assert(f_isascii('\v') == 1);
+    assert(f_isascii('\f') == 1);
+    printf("is_ascii tests passed successfully!\n");
+    return (0);
+}
+
 int test_isprint(void) {
     assert(f_isprint('a') == 1);
     assert(f_isprint('b') == 1);
@@ -157,6 +182,19 @@ int test_isprint(void) {
     assert(f_isprint('\t') == 0);
     assert(f_isprint('\n') == 0);
     printf("is_ascii tests passed successfully!\n");
+    return (0);
+}
+
+int test_iswhitespace(void) {
+    assert(f_iswhitespace('a') == 0);
+    assert(f_iswhitespace('b') == 0);
+    assert(f_iswhitespace('5') == 0);
+    assert(f_iswhitespace(' ') == 1);
+    assert(f_iswhitespace('\t') == 1);
+    assert(f_iswhitespace('\n') == 1);
+    assert(f_iswhitespace('\0') == 0);
+
+    printf("is_whitespace tests passed successfully!\n");
     return (0);
 }
 
@@ -217,7 +255,8 @@ int main(void) {
     test_putchar();
     test_putstr("test putstr");
     test_putendl("test putendl");
-    //test_dtoc();
+    test_dtoc();
     test_putnbr();
+    test_iswhitespace();
     return 0;
 }
