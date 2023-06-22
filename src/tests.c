@@ -79,6 +79,21 @@ int f_strcmp(const char *s1, const char *s2) {
     return (0);
 }
 
+int f_strncmp(const char *s1, const char *s2, size_t l) {
+    int     i;
+    int     n;
+    int     m;
+
+    n = f_strlen((char *)s1);
+    m = f_strlen((char *)s2);
+    i = 0;
+    while (i < n && i < m && i < (int)l) {
+        if (!(s1[i] == s2[i])) return (-1);
+        i++;
+    }
+    return (0);
+}
+
 char *f_strcat(char* s1, const char* s2 ) {
     int     n;
     int     m;
@@ -268,7 +283,7 @@ int test_putendl(char *s) {
     return (bytes);
 }
 
-void test_f_strcat () {
+void test_strcat () {
     char s1[8] = {
         'a',
         'b',
@@ -282,7 +297,30 @@ void test_f_strcat () {
     const char *s2;
     s2 = "123";
     assert(f_strcmp(f_strcat(s1, s2), "abc123") == 0);
-    f_putstr("strcat tests past sucessfully");
+    f_putstr("strcat tests past sucessfully\n");
+}
+
+void test_strcmp() {
+    char    *s1;
+    char    *s2;
+    
+    s1 = "abc";
+    s2 = "123";
+    assert(f_strcmp(s1, s1) == 0);
+    assert(f_strcmp(s1, s2) == -1);
+    f_putstr("strcmp tests past sucessfully\n");
+}
+
+void test_strncmp() {
+    char    *s1;
+    char    *s2;
+    
+    s1 = "abc";
+    s2 = "123";
+    assert(f_strncmp(s1, s1, 3) == 0);
+    assert(f_strncmp(s1, s1, 2) == 0);
+    assert(f_strncmp(s1, s2, 3) == -1);
+    f_putstr("strncmp tests past sucessfully\n");
 }
 
 void test_putnbr() {
@@ -309,6 +347,8 @@ int main(void) {
     test_dtoc();
     test_putnbr();
     test_iswhitespace();
-    test_f_strcat();
+    test_strcat();
+    test_strcmp();
+    test_strncmp();
     return 0;
 }
