@@ -162,9 +162,21 @@ int f_iswhitespace(char c){
     return (0);
 }
 
+int f_absval(int n) {
+    return (n < 0 ? n * -1 : n);
+}
+
 /*
 ** test suites
 */
+
+void test_absval() {
+    assert(f_absval(1) == 1);
+    assert(f_absval(-1) == 1);
+    assert(f_absval(10) == 10);
+    assert(f_absval(-10) == 1);
+    f_putstr("absval tests passed");
+}
 
 int test_dtoc() {
     assert(f_dtoc(0) == '0');
@@ -350,5 +362,6 @@ int main(void) {
     test_strcat();
     test_strcmp();
     test_strncmp();
+    test_absval();
     return 0;
 }
