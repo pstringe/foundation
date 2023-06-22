@@ -53,8 +53,8 @@ void f_putchar(char c) {
 }
 
 /*
-    To extract the last digit from n, we can mod by 10
-    To modify n such that the last digit is removed, we can divide by 10
+**    To extract the last digit from n, we can mod by 10
+**    To modify n such that the last digit is removed, we can divide by 10
 */
 
 char f_dtoc(int n) {
@@ -62,6 +62,37 @@ char f_dtoc(int n) {
         return (0);
     }
     return ((n + 48));
+}
+
+int f_strcmp(const char *s1, const char *s2) {
+    int     i;
+    int     n;
+    int     m;
+
+    n = f_strlen((char *)s1);
+    m = f_strlen((char *)s2);
+    i = 0;
+    while (i < n && i < m) {
+        if (!(s1[i] == s2[i])) return (-1);
+        i++;
+    }
+    return (0);
+}
+
+char *f_strcat(char* s1, const char* s2 ) {
+    int     n;
+    int     m;
+    int     i;
+
+    n = f_strlen(s1);
+    m = f_strlen((char *)s2);
+    
+    i = n;
+    while (i < n + m) {
+        s1[i] = s2[i - n];
+        i++;
+    }
+    return (s1);
 }
 
 void f_putnbr_fd(long long n, int fd)
@@ -105,14 +136,17 @@ int f_iswhitespace(char c){
     char*   whitespace_chars;
     int     i;
 
-    whitespace_chars = " \t, \r, \n, \f";
+    whitespace_chars = " \t\r\n\f";
     i = 0;
-    while (whitespace_chars[i]){
-        if (c != whitespace_chars[i])
-            return (0);
+    while (whitespace_chars[i]) {
+        if (c == whitespace_chars[i++]) {
+            return (1);
+        }
     }
-    return (1);
+    
+    return (0);
 }
+
 /*
 ** test suites
 */
@@ -234,6 +268,23 @@ int test_putendl(char *s) {
     return (bytes);
 }
 
+void test_f_strcat () {
+    char s1[8] = {
+        'a',
+        'b',
+        'c',
+        '\0',
+        '\0',
+        '\0',
+        '\0',
+        '\0'
+    };
+    const char *s2;
+    s2 = "123";
+    assert(f_strcmp(f_strcat(s1, s2), "abc123") == 0);
+    f_putstr("strcat tests past sucessfully");
+}
+
 void test_putnbr() {
     f_putnbr(0);
     f_putchar('\n');
@@ -258,5 +309,6 @@ int main(void) {
     test_dtoc();
     test_putnbr();
     test_iswhitespace();
+    test_f_strcat();
     return 0;
 }
