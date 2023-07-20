@@ -1,184 +1,56 @@
-#include <assert.h>
-#include <stdio.h>
-#include <unistd.h>
+#include "foundation.h"
 
-int f_isdigit(char c) {
-    int is_num;
-    
-    is_num = (c >= 48 && c <= 57);
-    return (is_num);
-}
+void    test_strsplit( ) {
+    char    *input = "This is a string";
+    char    **res;
+    int     i;
+    char    *test[] = {
+        "This",
+        "is",
+        "a",
+        "string",
+        NULL
+    };
 
-int f_isalpha(char c) {
-    int is_lower;
-    int is_upper;
-
-    is_lower = (c >= 97 && c <= 122);
-    is_upper = (c >= 65 && c <= 90);
-    return ((is_lower || is_upper) ? 1 : 0);
-}
-
-int f_isalnum(char c) {
-    int    is_num;
-    int    is_alpha;
-
-    is_num = f_isdigit(c);
-    is_alpha = f_isalpha(c);
-    return ((is_num || is_alpha) ? 1 : 0);
-}
-
-int f_isascii(int c) {
-    int is_ascii = (c >= 0 && c <= 127);
-    return (is_ascii ? 1 : 0);
-}
-
-int f_isprint(int c) {
-    int isprintable = (c >= 41);
-    return (isprintable ? 1 : 0);
-}
-
-int f_strlen(char *str){
-    int i;
+    res = f_strsplit(input, ' ');
     i = 0; 
-    while (*(str + i)) i++;
-    return (i);
-}
-
-void f_putchar_fd(char c, int f) {
-    write(f, &c, 1);
-}
-
-void f_putchar(char c) {
-    f_putchar_fd(c, 1);
-}
-
-/*
-**    To extract the last digit from n, we can mod by 10
-**    To modify n such that the last digit is removed, we can divide by 10
-*/
-
-char f_dtoc(int n) {
-    if (n > 9 || n < 0) {
-        return (0);
-    }
-    return ((n + 48));
-}
-
-int f_strcmp(const char *s1, const char *s2) {
-    int     i;
-    int     n;
-    int     m;
-
-    n = f_strlen((char *)s1);
-    m = f_strlen((char *)s2);
-    i = 0;
-    while (i < n && i < m) {
-        if (!(s1[i] == s2[i])) return (-1);
+    while (test[i] != NULL) {
+        assert(f_strcmp(res[i], test[i]) == 0);
         i++;
     }
-    return (0);
+    f_putstr("f_strsplit test successful");
 }
 
-int f_strncmp(const char *s1, const char *s2, size_t l) {
-    int     i;
-    int     n;
-    int     m;
+void    test_strnstr() {
+    char    *s1 = "thebiggestlittlestring";
+    char    *s2 = "little";
+    int     res;
 
-    n = f_strlen((char *)s1);
-    m = f_strlen((char *)s2);
-    i = 0;
-    while (i < n && i < m && i < (int)l) {
-        if (!(s1[i] == s2[i])) return (-1);
-        i++;
+    res = f_strcmp(f_strnstr(s1, s2, 23), "littlestring");
+    if (!(res == 0 )) {
+        f_putstr("strnstr fails");
+        return ;
     }
-    return (0);
+    f_putstr("strnstr passes");
 }
 
-char *f_strcat(char* s1, const char* s2 ) {
-    int     n;
-    int     m;
-    int     i;
+void    test_strstr() {
+    char *s1 = "thebiggestlittlestring";
+    char *s2 = "little";
 
-    n = f_strlen(s1);
-    m = f_strlen((char *)s2);
-    
-    i = n;
-    while (i < n + m) {
-        s1[i] = s2[i - n];
-        i++;
-    }
-    return (s1);
+    assert(f_strcmp(f_strstr(s1, s2), "littlestring") == 0);
+    f_putstr("strstr passes");
 }
 
-void f_putnbr_fd(long long n, int fd)
-{
-	long long tmp;
-
-	tmp = n;
-	if (tmp < 0) {
-		tmp = -tmp;
-		f_putchar_fd('-', fd);
-	}
-	if (tmp >= 10) {
-		f_putnbr_fd(tmp / 10, fd);
-		f_putnbr_fd(tmp % 10, fd);
-	}
-	else {
-		f_putchar_fd(tmp + '0', fd);
-	}
-}
-
-void f_putnbr(long long n) {
-    f_putnbr_fd(n , 1);
-}
-
-int f_putstr(char *s) {
-    int i;
-    i = 0;
-    while (*(s + i))
-        f_putchar(*(s + i++));
-    return (i);
-}
-
-int f_putendl(char *s) {
-    int bytes_written = 0;
-    bytes_written = f_putstr(s);
-    f_putchar('\n');
-    return (bytes_written + 1);
-}
-
-int f_iswhitespace(char c){
-    char*   whitespace_chars;
-    int     i;
-
-    whitespace_chars = " \t\r\n\f";
-    i = 0;
-    while (whitespace_chars[i]) {
-        if (c == whitespace_chars[i++]) {
-            return (1);
-        }
-    }
-    
-    return (0);
-}
-
-int f_absval(int n) {
-    return (n < 0 ? n * -1 : n);
-}
-
-/*
-** test suites
-*/
-
-void test_absval() {
+void    test_absval() {
     assert(f_absval(1) == 1);
     assert(f_absval(-1) == 1);
     assert(f_absval(10) == 10);
-    assert(f_absval(-10) == 1);
+    assert(f_absval(-10) == 10);
     f_putstr("absval tests passed");
 }
 
-int test_dtoc() {
+int     test_dtoc() {
     assert(f_dtoc(0) == '0');
     assert(f_dtoc(1) == '1');
     assert(f_dtoc(10) == '\0');
@@ -186,7 +58,7 @@ int test_dtoc() {
     return (0);
 }
 
-int test_isalnum(void) {
+int     test_isalnum(void) {
     assert(f_isalnum('a') == 1);
     assert(f_isalnum('Z') == 1);
     assert(f_isalnum('5') == 1);
@@ -195,7 +67,7 @@ int test_isalnum(void) {
     return (0);
 }
 
-int test_isalpha(void) {
+int     test_isalpha(void) {
     assert(f_isalpha('a') == 1);
     assert(f_isalpha('b') == 1);
     assert(f_isalpha('5') == 0);
@@ -204,7 +76,7 @@ int test_isalpha(void) {
     return (0);
 }
 
-int test_isdigit(void) {
+int     test_isdigit(void) {
     assert(f_isdigit('a') == 0);
     assert(f_isdigit('b') == 0);
     assert(f_isdigit('5') == 1);
@@ -213,7 +85,7 @@ int test_isdigit(void) {
     return (0);
 }
 
-int test_isascii(void) {
+int     test_isascii(void) {
     assert(f_isascii('a') == 1);
     assert(f_isascii('b') == 1);
     assert(f_isascii('5') == 1);
@@ -222,7 +94,7 @@ int test_isascii(void) {
     return (0);
 }
 
-int test_is_whitespace(void) {
+int     test_is_whitespace(void) {
     assert(f_isascii('a') == 0);
     assert(f_isascii('1') == 0);
     assert(f_isascii(' ') == 1);
@@ -235,7 +107,7 @@ int test_is_whitespace(void) {
     return (0);
 }
 
-int test_isprint(void) {
+int     test_isprint(void) {
     assert(f_isprint('a') == 1);
     assert(f_isprint('b') == 1);
     assert(f_isprint('5') == 1);
@@ -335,6 +207,33 @@ void test_strncmp() {
     f_putstr("strncmp tests past sucessfully\n");
 }
 
+void test_strcpy() {
+    char     s1[5];
+    char     *s2;
+
+    s2 = "dcba";
+    assert(f_strcmp(f_strcpy(s1, s2), s2) == 0);
+    f_putstr("strcpy tests past sucessfully\n");
+}
+
+void test_strncpy() {
+    char     s1[5];
+    char     *s2;
+
+    s2 = "dcba";
+    assert(f_strcmp(f_strncpy(s1, s2, 4), s2) == 0);
+    f_putstr("strcpy tests past sucessfully\n");
+}
+
+void test_strncat() {
+    char    s1[5];
+    char    *s2;
+
+    s2 = "dcba";
+    assert(f_strcmp(f_strncat(s1, s2, 4), s2) == 0);
+    f_putstr("strncat tests past successfully");
+}
+
 void test_putnbr() {
     f_putnbr(0);
     f_putchar('\n');
@@ -363,5 +262,10 @@ int main(void) {
     test_strcmp();
     test_strncmp();
     test_absval();
-    return 0;
+    test_strcpy();
+    test_strncpy();
+    test_strncat();
+    test_strnstr();
+    test_strsplit();
+    return (0);
 }
