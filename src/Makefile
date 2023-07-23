@@ -32,19 +32,21 @@ FUNCS = f_absval\
 		f_strcpy\
 		f_strncpy\
 		f_strnew\
+		f_strstr\
 		f_strnstr\
 		f_strlen\
 		f_strsplit
 
-TEST := tests
+TESTS := tests
 SRCS := $(patsubst %, %.c, $(FUNCS))
 OBJS := $(patsubst %.c, %.o, $(SRCS))
 CFLAGS = -Wall -Werror -Wextra
 
 all : $(NAME)
 
-$(TEST): $(OBJS)
-	gcc -o $(OBJS) tests.c -L. $(NAME)
+$(TESTS): $(NAME)
+	gcc -c $(patsubst %, %.c, $(TESTS))
+	gcc -o $(TESTS) $(OBJS) tests.c -L. $(NAME)
 
 $(NAME) : $(OBJS)
 	ar rc $(NAME) $(OBJS)

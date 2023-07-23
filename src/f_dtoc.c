@@ -1,3 +1,5 @@
+#include "foundation.h"
+
 /*
 **    To extract the last digit from n, we can mod by 10
 **    To modify n such that the last digit is removed, we can divide by 10
