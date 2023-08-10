@@ -1,5 +1,5 @@
 CC = gcc
-NAME = foundation.a
+NAME = libfoundation.a
 FUNCS = f_absval\
 		f_array_append\
 		f_array_cmp\
