@@ -35,7 +35,8 @@ FUNCS = f_absval\
 		f_strstr\
 		f_strnstr\
 		f_strlen\
-		f_strsplit
+		f_strsplit\
+		f_gnl
 
 TESTS := tests
 SRCS := $(patsubst %, %.c, $(FUNCS))
@@ -60,5 +61,6 @@ clean :
 
 fclean : clean
 	rm -f $(NAME)
+	rm -f $(TESTS)
 
 re : fclean all

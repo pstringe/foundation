@@ -22,8 +22,8 @@ char    **f_strsplit(char const *s, char c) {
     char    **res;
 
     len = f_strcount((char*)s, c);
-    //add extra pointer since there will be one more word than there are delimiters
-    //add extra pointer for terminator
+    //allocate extra pointer since there will be one more word than there are delimiters
+    //allocate extra pointer for terminator
     res = (char **)f_memalloc(sizeof(char *) * len + 1 + 1);
     tmp = f_strnew(SIZE);
 

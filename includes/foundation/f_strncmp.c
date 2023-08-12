@@ -1,9 +1,9 @@
 #include "foundation.h"
 
 int     f_strncmp(const char *s1, const char *s2, size_t n) {
-    size_t     i;
-    int     sum1;
-    int     sum2;
+    size_t      i;
+    int         sum1;
+    int         sum2;
 
     sum1 = 0;
     sum2 = 0;
@@ -18,5 +18,5 @@ int     f_strncmp(const char *s1, const char *s2, size_t n) {
         sum2 += (int)s2[i];
         ++i;
     }
-    return (sum2 - sum1);
+    return (sum1 - sum2);
 }

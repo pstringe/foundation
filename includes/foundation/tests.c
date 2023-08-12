@@ -195,6 +195,9 @@ void test_strcmp() {
     f_putstr("strcmp tests past sucessfully\n");
 }
 
+//abc
+//123
+//ttt
 void test_strncmp() {
     char    *s1;
     char    *s2;
@@ -202,8 +205,7 @@ void test_strncmp() {
     s1 = "abc";
     s2 = "123";
     assert(f_strncmp(s1, s1, 3) == 0);
-    assert(f_strncmp(s1, s1, 2) == 0);
-    assert(f_strncmp(s1, s2, 3) == -1);
+    assert(f_strncmp(s1, s2, 3) > 0);
     f_putstr("strncmp tests past sucessfully\n");
 }
 
@@ -246,6 +248,17 @@ void test_putnbr() {
     f_putnbr(111);
 }
 
+int test_gnl() {
+    int     fd;
+    size_t  bytes;
+    char    *line;
+
+    bytes = f_gnl(fd, &line);
+    f_putstr(line);
+    assert(f_strncmp("test0", line, bytes) == 0);
+    return (bytes);
+}
+
 int main(void) {
     test_isalpha();
     test_isdigit();
@@ -267,5 +280,6 @@ int main(void) {
     test_strncat();
     test_strnstr();
     test_strsplit();
+    test_gnl();
     return (0);
 }

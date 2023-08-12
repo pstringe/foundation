@@ -1,3 +1,7 @@
+/*
+** 
+*/
+
 int     f_strcount(char *s, char c) {
     int     i;
     int     count;

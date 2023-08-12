@@ -42,5 +42,6 @@ char        *f_strnew(int l);
 char        *f_strnstr(const char *big, const char *sm, size_t len);
 char        **f_strsplit(char const *s, char c);
 char        *f_strstr(const char *big, const char *little);
+int         f_gnl(const int fd, char **line);
 
 #endif
